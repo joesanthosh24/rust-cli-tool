@@ -1,7 +1,8 @@
 use std::env;
-use std::error::Error;
-use std::fs;
 use std::process;
+
+use my_cli_tool::ArgsConfig;
+use my_cli_tool::run;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -13,30 +14,5 @@ fn main() {
     if let Err(e) = run(config) {
         println!("Error: {e}");
         process::exit(1);
-    }
-}
-
-fn run(config: ArgsConfig) -> Result<(), Box<dyn Error>> {
-    let contents = fs::read_to_string(config.filename)?;
-
-    println!("Contents of file:\n{}", contents);
-
-    Ok(())
-}
-
-struct ArgsConfig {
-    query: String,
-    filename: String
-}
-
-impl ArgsConfig {
-    fn new(args: &[String]) -> Result<ArgsConfig, &str> {
-        if args.len() < 3 {
-            return Err("Not enough arguments");
-        }
-        let query = args[1].clone();
-        let filename = args[2].clone();
-    
-        Ok(ArgsConfig { query, filename })
     }
 }
