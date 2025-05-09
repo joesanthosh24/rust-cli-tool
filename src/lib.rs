@@ -4,7 +4,9 @@ use std::fs;
 pub fn run(config: ArgsConfig) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.filename)?;
 
-    println!("Contents of file:\n{}", contents);
+    for line in search(&config.query, &contents) {
+        println!("{line}");
+    }
 
     Ok(())
 }
